@@ -18,5 +18,6 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
         
         <mapping class="com.maybank.wonghengguan.model.Transaction"/>
+        <mapping class="com.example.myapp.model.UserEntity"/>
     </session-factory>
 </hibernate-configuration>
