@@ -20,14 +20,14 @@ public class TransactionController {
   @Autowired
   private TransactionService transactionService;
 
-  @GetMapping("/get-transactions")
+  @GetMapping("public/get-transactions")
   public Page < Transaction > retrieveTransactions(@RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size) {
     Pageable pageable = PageRequest.of(page, size);
     return transactionService.getAllTransactions(pageable);
   }
 
-  @GetMapping("/get-transactions/description")
+  @GetMapping("public/get-transactions/description")
   public Page < Transaction > retrieveTransactionsByDescription(
     @RequestParam String description,
     @RequestParam(defaultValue = "0") int page,
@@ -36,7 +36,7 @@ public class TransactionController {
     return transactionService.getAllTransactionsByDescription(description, pageable);
   }
 
-  @GetMapping("/get-transactions/accountNumbers")
+  @GetMapping("public/get-transactions/accountNumbers")
   public Page < Transaction > retrieveTransactionsByAccountNumber(
     @RequestParam List<Long> accountNumber,
     @RequestParam(defaultValue = "0") int page,
@@ -45,7 +45,7 @@ public class TransactionController {
     return transactionService.getAllTransactionsByAccountNumbers(accountNumber, pageable);
   }
 
-  @GetMapping("/get-transactions/customerIds")
+  @GetMapping("public/get-transactions/customerIds")
   public Page < Transaction > retrieveTransactionsByCustomerId(
     @RequestParam List<Long> customerId,
     @RequestParam(defaultValue = "0") int page,

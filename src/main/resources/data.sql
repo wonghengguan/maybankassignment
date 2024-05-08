@@ -1,1 +1,1 @@
-INSERT INTO user_entity (username, password, role) VALUES ('user', '$2a$10$Zk2t1aTT8IZe.KUcz3fDqevAMN4txLmIb2Sog85j8MjyDZw/.dJ1u', 'ROLE_USER');
+INSERT INTO user_entity (username, password, role) VALUES ('user2', '$2a$10$Cwu2yHW3.LHHlLS/kFv6neaCVV60rO62SNCxAEZ.JHn4uAsJUrom6', 'ROLE_USER');

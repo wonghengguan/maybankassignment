@@ -31,6 +31,7 @@ public class DataInitializeService {
             // Read all lines from the file
             List<String> lines = Files.readAllLines(file.toPath());
 
+            // Start from index 1 assuming index 0 is always title
             for (int i = 1 ; i<lines.size(); i++) {
                 String[] parts = lines.get(i).split("\\|");
 

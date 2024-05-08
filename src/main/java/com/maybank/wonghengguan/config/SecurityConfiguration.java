@@ -2,8 +2,6 @@ package com.maybank.wonghengguan.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -26,7 +22,7 @@ public class SecurityConfiguration {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             )
             .authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/api/v1/public/**").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(withDefaults());
@@ -35,22 +31,16 @@ public class SecurityConfiguration {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
+        String encodedPassword = new BCryptPasswordEncoder().encode("testpassword");
         UserDetails user = User.withUsername("user")
-            .password("{bcrypt}" + new BCryptPasswordEncoder().encode("password"))
+            .password(encodedPassword)
             .roles("USER")
             .build();
-        return new InMemoryUserDetailsManager(user);
-    }
 
-    @Bean
-    public UserDetailsManager users(DataSource dataSource) {
-        UserDetails user = User.withUsername("user")
-            .password("{bcrypt}" + new BCryptPasswordEncoder().encode("password"))
-            .roles("USER")
-            .build();
-        JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        users.createUser(user);
-        return users;
+            // Log user details
+    System.out.println("User details: " + user.getUsername() + ", " + user.getPassword() + ", " + user.getAuthorities());
+
+        return new InMemoryUserDetailsManager(user);
     }
 
     @Bean
