@@ -1,5 +1,6 @@
 package com.maybank.wonghengguan.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
@@ -9,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Transaction {
+public class Transaction implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,7 @@ public class Transaction {
     private Time trxTime;
 
     private String description;
-    
+
     private Long accountNumber;
 
     private Long customerId;
