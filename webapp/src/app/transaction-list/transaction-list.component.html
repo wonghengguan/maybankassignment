@@ -26,13 +26,12 @@
           <th>Description</th>
           <th>Account Number</th>
           <th>Customer ID</th>
-          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let transaction of transactions">
           <td>{{ transaction.id }}</td>
-          <td>{{ transaction.trxAmount }}</td>
+          <td>{{ transaction.trxAmount | currency: 'RM' }}</td>
           <td>{{ transaction.trxDate }}</td>
           <td>{{ transaction.trxTime }}</td>
           <td>
@@ -40,14 +39,11 @@
           </td>
           <td>{{ transaction.accountNumber }}</td>
           <td>{{ transaction.customerId }}</td>
-          <td>
-            <button type="button" (click)="save(transaction)" >Save</button>
-          </td>
         </tr>
       </tbody>
     </table>
   
-    <button type="button" class="batch-update-btn" (click)="batchUpdate()">Batch Update</button>
+    <button type="button" class="batch-update-btn" (click)="batchUpdate()">Update</button>
 
     <div class="pagination">
       <button (click)="prevPage()" [disabled]="currentPage === 0">Previous</button>

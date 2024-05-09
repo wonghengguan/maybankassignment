@@ -38,7 +38,7 @@ public class AuthController {
 
     private boolean isValidCredentials(String username, String password) {
         // hardcoded for assignment
-        return "user".equals(username) && "testpassword".equals(password);
+        return "user".equals(username) && "password".equals(password);
     }
 
     @Data

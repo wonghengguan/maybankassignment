@@ -1,47 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Transaction } from '../../transaction-list/transaction.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
 
-    private baseUrl = 'http://localhost:8080';
-  private apiUrl = 'api/v1/public/get-transactions'; // Endpoint to fetch transactions
+  private baseUrl = 'http://localhost:8080/api';
+  private versionUrl = 'v1'; 
+  private getUrl = 'public/get-transactions';
+  private updateUrl = 'private/batch-update-description';
 
   constructor(private http: HttpClient) { }
 
-  getTransactions(page: number = 0, size: number = 10): Observable<any> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.http.get<any>(`${this.baseUrl}/${this.apiUrl}`, { params });
+  getAllTransactions(criteria: any, pageable: any): Observable<any> {
+    let params = new HttpParams();
+    Object.keys(criteria).forEach(key => {
+      params = params.set(key, criteria[key]);
+    });
+    params = params.set('page', pageable.page);
+    params = params.set('size', pageable.size);
+    return this.http.post<any>(`${this.baseUrl}/${this.versionUrl}/${this.getUrl}`, criteria, { params });
+}
+  
+  batchUpdateDescription(transactions: any[], username: string, password: string): Observable<any> {
+    const basicAuth = btoa('user:password');
+    const headers = new HttpHeaders({ Authorization: `Basic ${basicAuth}` });
+    
+    return this.http.put(`${this.baseUrl}/${this.versionUrl}/${this.updateUrl}`, transactions, { headers });
   }
-
-  getTransactionsByDescription(description: string, page: number = 0, size: number = 10): Observable<any> {
-    const params = new HttpParams()
-      .set('description', description)
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.http.get<any>('api/v1/public/get-transactions/description', { params });
-  }
-
-  getTransactionsByAccountNumbers(accountNumbers: number[], page: number = 0, size: number = 10): Observable<any> {
-    const params = new HttpParams()
-      .set('accountNumber', accountNumbers.join(','))
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.http.get<any>('api/v1/public/get-transactions/accountNumbers', { params });
-  }
-
-  getTransactionsByCustomerIds(customerIds: number[], page: number = 0, size: number = 10): Observable<any> {
-    const params = new HttpParams()
-      .set('customerId', customerIds.join(','))
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.http.get<any>('api/v1/public/get-transactions/customerIds', { params });
-  }
-
-  // Implement updateDescription() 
 }

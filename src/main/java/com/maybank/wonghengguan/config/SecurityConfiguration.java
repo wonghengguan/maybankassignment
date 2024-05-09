@@ -23,6 +23,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/v1/public/**").permitAll()
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/logout").permitAll()
+                .requestMatchers("/api/v1/private/**").authenticated()
                 .anyRequest().authenticated()
             )
             .httpBasic(withDefaults());
@@ -31,15 +32,11 @@ public class SecurityConfiguration {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        String encodedPassword = new BCryptPasswordEncoder().encode("testpassword");
+        String encodedPassword = new BCryptPasswordEncoder().encode("password");
         UserDetails user = User.withUsername("user")
             .password(encodedPassword)
             .roles("USER")
             .build();
-
-            // Log user details
-    System.out.println("User details: " + user.getUsername() + ", " + user.getPassword() + ", " + user.getAuthorities());
-
         return new InMemoryUserDetailsManager(user);
     }
 
@@ -47,4 +44,6 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    
 }

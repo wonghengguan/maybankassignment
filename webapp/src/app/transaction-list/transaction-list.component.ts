@@ -3,7 +3,7 @@ import { Transaction } from './transaction.model';
 import { TransactionService } from '../services/auth/transaction.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
@@ -17,23 +17,41 @@ export class TransactionListComponent implements OnInit {
   transactions: Transaction[] = [];
   currentPage: number = 0;
   totalPages: number = 0;
-  searchForm: FormGroup = this.fb.group({
-    accountNumber: [''],
-    customerId: [''],
-    description: ['']
-  });
+  searchForm: FormGroup;
 
-  constructor(private transactionService: TransactionService, private fb: FormBuilder) { }
+  constructor(private transactionService: TransactionService, private fb: FormBuilder) {
+    this.searchForm = this.fb.group({
+      accountNumber: [''],
+      customerId: [''],
+      description: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.getTransactions();
   }
 
   getTransactions(): void {
-    this.transactionService.getTransactions(this.currentPage).subscribe(response => {
-      this.transactions = response.content;
-      this.totalPages = response.totalPages;
-    });
+    const { accountNumber, customerId, description } = this.searchForm.value;
+    const pageable = { page: this.currentPage, size: 10 };
+    const searchParams: any = {};
+    if (accountNumber) {
+      const accountNumbersArray = accountNumber.split(',').map((num: string) => num.trim());
+      searchParams.accountNumber = accountNumbersArray;
+    }
+    if (customerId) {
+      const customerIdsArray = customerId.split(',').map((id: string) => id.trim());
+      searchParams.customerId = customerIdsArray;
+    }
+    if (description) {
+      searchParams.description = description;
+    }
+
+    this.transactionService.getAllTransactions(searchParams, pageable)
+      .subscribe(response => {
+        this.transactions = response.content;
+        this.totalPages = response.totalPages;
+      });
   }
 
   nextPage(): void {
@@ -50,21 +68,20 @@ export class TransactionListComponent implements OnInit {
     }
   }
 
-
-  save(transaction: Transaction): void {
-    // this.transactionService.updateTransaction(transaction).subscribe(() => {
-    //   // Update the transaction in the UI
-    // });
-  }
-
   batchUpdate(): void {
-    // Implement batch update logic here
+    this.transactionService.batchUpdateDescription(this.transactions, 'user', 'password')
+      .subscribe({
+        next: () => {
+          this.getTransactions();
+        },
+        error: error => {
+          console.error('Batch update failed:', error);
+        }
+      });
   }
 
   search(): void {
-    this.transactionService.getTransactions(this.currentPage).subscribe(response => {
-      this.transactions = response.content;
-      this.totalPages = response.totalPages;
-    });
+    this.currentPage = 0; // Reset page when performing a new search
+    this.getTransactions();
   }
 }
