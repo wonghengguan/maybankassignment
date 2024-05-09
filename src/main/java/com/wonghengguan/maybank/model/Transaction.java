@@ -1,4 +1,4 @@
-package com.maybank.wonghengguan.model;
+package com.wonghengguan.maybank.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

@@ -1,11 +1,11 @@
-package com.maybank.wonghengguan.service;
+package com.wonghengguan.maybank.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
-import com.maybank.wonghengguan.model.Transaction;
-import com.maybank.wonghengguan.repo.TransactionRepo;
+import com.wonghengguan.maybank.model.Transaction;
+import com.wonghengguan.maybank.repo.TransactionRepo;
 
 import java.io.File;
 import java.io.IOException;

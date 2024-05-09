@@ -1,4 +1,4 @@
-package com.maybank.wonghengguan.util;
+package com.wonghengguan.maybank.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

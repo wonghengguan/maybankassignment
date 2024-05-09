@@ -1,10 +1,10 @@
-package com.maybank.wonghengguan;
+package com.wonghengguan.maybank;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.maybank.wonghengguan.service.DataInitializeService;
+import com.wonghengguan.maybank.service.DataInitializeService;
 
 @SpringBootApplication
 public class WonghengguanApplication {
