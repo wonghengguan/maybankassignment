@@ -23,7 +23,7 @@ import jakarta.transaction.Transactional;
 public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private final TransactionRepo transactionRepo;
-    
+
     @Autowired
     public TransactionServiceImpl(TransactionRepo transactionRepo) {
         this.transactionRepo = transactionRepo;
@@ -53,21 +53,22 @@ public class TransactionServiceImpl implements TransactionService {
                 String description = (String) criteria.get("description");
                 Expression<String> descriptionExpression = criteriaBuilder.upper(root.get("description"));
                 String descriptionUpper = description.toUpperCase();
-                
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(descriptionExpression, "%" + descriptionUpper + "%"));
+
+                predicate = criteriaBuilder.and(predicate,
+                        criteriaBuilder.like(descriptionExpression, "%" + descriptionUpper + "%"));
             }
             if (criteria.containsKey("accountNumber")) {
                 List<?> accountNumbers = (List<?>) criteria.get("accountNumber");
                 List<Long> accountNumbersLong = accountNumbers.stream()
-                                                              .map(o -> Long.parseLong(o.toString()))
-                                                              .collect(Collectors.toList());
+                        .map(o -> Long.parseLong(o.toString()))
+                        .collect(Collectors.toList());
                 predicate = criteriaBuilder.and(predicate, root.get("accountNumber").in(accountNumbersLong));
             }
             if (criteria.containsKey("customerId")) {
                 List<?> customerIds = (List<?>) criteria.get("customerId");
                 List<Long> customerIdsLong = customerIds.stream()
-                                                        .map(o -> Long.parseLong(o.toString()))
-                                                        .collect(Collectors.toList());
+                        .map(o -> Long.parseLong(o.toString()))
+                        .collect(Collectors.toList());
                 predicate = criteriaBuilder.and(predicate, root.get("customerId").in(customerIdsLong));
             }
             return predicate;

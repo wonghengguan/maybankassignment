@@ -15,7 +15,6 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, { username, password }).pipe(
       catchError(error => {
         console.error('Error occurred during login:', error);
-        // Return a new observable with empty data to avoid breaking the stream
         return of(null);
       })
     );

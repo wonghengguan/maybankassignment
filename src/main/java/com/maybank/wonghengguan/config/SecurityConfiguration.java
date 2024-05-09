@@ -17,16 +17,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(withDefaults())
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/api/v1/public/**").permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/logout").permitAll()
-                .requestMatchers("/api/v1/private/**").authenticated()
-                .anyRequest().authenticated()
-            )
-            .httpBasic(withDefaults());
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/api/v1/public/**").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/logout").permitAll()
+                        .requestMatchers("/api/v1/private/**").authenticated()
+                        .anyRequest().authenticated())
+                .httpBasic(withDefaults());
         return http.build();
     }
 
@@ -34,9 +33,9 @@ public class SecurityConfiguration {
     public InMemoryUserDetailsManager userDetailsService() {
         String encodedPassword = new BCryptPasswordEncoder().encode("password");
         UserDetails user = User.withUsername("user")
-            .password(encodedPassword)
-            .roles("USER")
-            .build();
+                .password(encodedPassword)
+                .roles("USER")
+                .build();
         return new InMemoryUserDetailsManager(user);
     }
 
@@ -45,5 +44,4 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    
 }
