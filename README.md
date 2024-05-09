@@ -59,3 +59,6 @@ A simple version of Class diagram and Activity diagram is uploaded into this rep
 
 ## Concepts adapted
 1. Separating service and implementation, as seen in TransactionService and TransactionServiceImpl class.
+
+## Authentication
+1. Basic Authentication using username and password is adopted in this project.
