@@ -1,4 +1,4 @@
-package com.maybank.wonghengguan.controller;
+package com.wonghengguan.maybank.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

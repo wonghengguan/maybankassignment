@@ -1,4 +1,4 @@
-package com.maybank.wonghengguan.config;
+package com.wonghengguan.maybank.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

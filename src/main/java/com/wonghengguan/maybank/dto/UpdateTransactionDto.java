@@ -1,4 +1,4 @@
-package com.maybank.wonghengguan.dto;
+package com.wonghengguan.maybank.dto;
 
 import lombok.Data;
 

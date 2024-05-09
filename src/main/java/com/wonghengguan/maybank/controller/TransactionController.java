@@ -1,4 +1,4 @@
-package com.maybank.wonghengguan.controller;
+package com.wonghengguan.maybank.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maybank.wonghengguan.dto.UpdateTransactionDto;
-import com.maybank.wonghengguan.model.Transaction;
-import com.maybank.wonghengguan.service.TransactionService;
+import com.wonghengguan.maybank.dto.UpdateTransactionDto;
+import com.wonghengguan.maybank.model.Transaction;
+import com.wonghengguan.maybank.service.TransactionService;
 
 @RestController
 @RequestMapping("api/v1")
