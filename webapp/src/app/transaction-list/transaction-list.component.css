@@ -17,6 +17,16 @@
   margin-right: 10px;
 }
 
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.button-row button {
+  margin-right: 10px; /* Add spacing between buttons */
+}
+
 .transaction-table {
   width: 100%;
   border-collapse: collapse;
@@ -65,7 +75,7 @@ button:disabled {
 }
 
 .pagination {
-  margin: 20px auto;
+  margin-top: 20px;
   text-align: center;
 }
 

@@ -6,5 +6,6 @@ export interface Transaction {
     description: string;
     accountNumber: number;
     customerId: number;
+    [key: string]: any;
   }
   

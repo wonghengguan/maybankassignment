@@ -7,17 +7,17 @@ export const routes: Routes = [
     {
         path: '',
         component: LoginComponent,
-        title: 'login.title',
+        title: 'Login',
     },
     {
         path: 'login',
         component: LoginComponent,
-        title: 'login.title',
+        title: 'Login',
     },
     {
         path: 'transactions',
         component: TransactionListComponent,
-        title: 'transaction-list.title',
+        title: 'Transactions',
     },
     { path: '', redirectTo: '/login', pathMatch: 'full' }, 
     
