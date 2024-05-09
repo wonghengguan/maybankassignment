@@ -11,18 +11,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            )
+            .cors(withDefaults())
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/api/v1/public/**").permitAll()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/logout").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(withDefaults());

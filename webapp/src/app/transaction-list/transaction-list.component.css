@@ -1,0 +1,84 @@
+.transaction-list-container {
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.search-form {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+}
+
+.form-group {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.transaction-table th {
+  background-color: #f2f2f2;
+}
+
+.transaction-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.transaction-table input[type="text"] {
+  width: calc(100% - 16px);
+  padding: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.pagination button {
+  margin-right: 10px;
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+}
+
+.batch-update-btn {
+  float: right;
+}

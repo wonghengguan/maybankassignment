@@ -1,0 +1,57 @@
+<div class="transaction-list-container">
+    <h1 class="mat-h1">Transaction List</h1>
+  
+    <form class="search-form" [formGroup]="searchForm" (ngSubmit)="search()">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-group">
+          <input matInput formControlName="accountNumber" placeholder="Account Number">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-group">
+          <input matInput formControlName="customerId" placeholder="Customer ID">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-group">
+          <input matInput formControlName="description" placeholder="Description">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Search</button>
+      </div>
+    </form>
+  
+    <table class="transaction-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Description</th>
+          <th>Account Number</th>
+          <th>Customer ID</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions">
+          <td>{{ transaction.id }}</td>
+          <td>{{ transaction.trxAmount }}</td>
+          <td>{{ transaction.trxDate }}</td>
+          <td>{{ transaction.trxTime }}</td>
+          <td>
+            <input matInput type="text" [(ngModel)]="transaction.description" >
+          </td>
+          <td>{{ transaction.accountNumber }}</td>
+          <td>{{ transaction.customerId }}</td>
+          <td>
+            <button type="button" (click)="save(transaction)" >Save</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <button type="button" class="batch-update-btn" (click)="batchUpdate()">Batch Update</button>
+
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="currentPage === 0">Previous</button>
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1">Next</button>
+    </div>
+</div>
