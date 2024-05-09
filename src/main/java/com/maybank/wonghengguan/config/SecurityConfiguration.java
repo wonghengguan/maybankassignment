@@ -11,35 +11,31 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            )
-            .authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/api/v1/public/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .httpBasic(withDefaults());
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/api/v1/public/**").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/logout").permitAll()
+                        .requestMatchers("/api/v1/private/**").authenticated()
+                        .anyRequest().authenticated())
+                .httpBasic(withDefaults());
         return http.build();
     }
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        String encodedPassword = new BCryptPasswordEncoder().encode("testpassword");
+        String encodedPassword = new BCryptPasswordEncoder().encode("password");
         UserDetails user = User.withUsername("user")
-            .password(encodedPassword)
-            .roles("USER")
-            .build();
-
-            // Log user details
-    System.out.println("User details: " + user.getUsername() + ", " + user.getPassword() + ", " + user.getAuthorities());
-
+                .password(encodedPassword)
+                .roles("USER")
+                .build();
         return new InMemoryUserDetailsManager(user);
     }
 
@@ -47,4 +43,5 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

@@ -24,7 +24,7 @@ public class Transaction {
     private Time trxTime;
 
     private String description;
-    
+
     private Long accountNumber;
 
     private Long customerId;

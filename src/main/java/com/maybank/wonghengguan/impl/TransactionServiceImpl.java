@@ -1,52 +1,77 @@
 package com.maybank.wonghengguan.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.maybank.wonghengguan.dto.UpdateTransactionDto;
 import com.maybank.wonghengguan.model.Transaction;
 import com.maybank.wonghengguan.repo.TransactionRepo;
 import com.maybank.wonghengguan.service.TransactionService;
 
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private final TransactionRepo transactionRepo;
-    
+
     @Autowired
     public TransactionServiceImpl(TransactionRepo transactionRepo) {
         this.transactionRepo = transactionRepo;
     }
 
-    public Page<Transaction> getAllTransactions(Pageable pageable) {
-        return transactionRepo.findAll(pageable);
+    @Override
+    public Page<Transaction> getAllTransactionsByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        Specification<Transaction> spec = this.getSpecification(criteria);
+        return transactionRepo.findAll(spec, pageable);
     }
 
-    public Page<Transaction> getAllTransactionsByDescription(String description, Pageable pageable) {
-        return transactionRepo.findByDescription(description, pageable);
-    }
-
-    public Page<Transaction> getAllTransactionsByAccountNumbers(List<Long> accountNumbers, Pageable pageable) {
-        return transactionRepo.findByAccountNumberIn(accountNumbers, pageable);
-    }
-    
-    public Page<Transaction> getAllTransactionsByCustomerIds(List<Long> customerIds, Pageable pageable) {
-        return transactionRepo.findByCustomerIdIn(customerIds, pageable);
-    }    
-
+    @Override
     @Transactional
-    public void batchUpdateDescription(List<Long> transactionIds, String newDescription) {
-        for (Long transactionId : transactionIds) {
-            Transaction transaction = transactionRepo.findById(transactionId).orElse(null);
-            if (transaction != null) {
-                transaction.setDescription(newDescription);
-                transactionRepo.save(transaction);
-            }
+    public void batchUpdateDescription(List<UpdateTransactionDto> transactions) {
+        for (UpdateTransactionDto dto : transactions) {
+            Transaction transaction = transactionRepo.findById(dto.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Transaction not found with id: " + dto.getId()));
+            transaction.setDescription(dto.getDescription());
+            transactionRepo.save(transaction);
         }
+    }
+
+    private Specification<Transaction> getSpecification(Map<String, Object> criteria) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (criteria.containsKey("description")) {
+                String description = (String) criteria.get("description");
+                Expression<String> descriptionExpression = criteriaBuilder.upper(root.get("description"));
+                String descriptionUpper = description.toUpperCase();
+
+                predicate = criteriaBuilder.and(predicate,
+                        criteriaBuilder.like(descriptionExpression, "%" + descriptionUpper + "%"));
+            }
+            if (criteria.containsKey("accountNumber")) {
+                List<?> accountNumbers = (List<?>) criteria.get("accountNumber");
+                List<Long> accountNumbersLong = accountNumbers.stream()
+                        .map(o -> Long.parseLong(o.toString()))
+                        .collect(Collectors.toList());
+                predicate = criteriaBuilder.and(predicate, root.get("accountNumber").in(accountNumbersLong));
+            }
+            if (criteria.containsKey("customerId")) {
+                List<?> customerIds = (List<?>) criteria.get("customerId");
+                List<Long> customerIdsLong = customerIds.stream()
+                        .map(o -> Long.parseLong(o.toString()))
+                        .collect(Collectors.toList());
+                predicate = criteriaBuilder.and(predicate, root.get("customerId").in(customerIdsLong));
+            }
+            return predicate;
+        };
     }
 }
