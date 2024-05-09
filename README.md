@@ -48,3 +48,14 @@ For frontend, please cd to webapp folder in another terminal and run the followi
 npm install
 ng serve
 ```
+
+## Documentations
+A simple version of Class diagram and Activity diagram is uploaded into this repo.
+
+## Design Pattern adapted
+1. Singleton design pattern can be seen in DataInitializeService, as the application only require a single instance of it to read batch files.
+2. MVC design pattern can be seen in Transaction as the Model, transaction-list.html as the View, and TransactionController as the Controller.
+3. Dependency Injection, which Spring Boot heavily uses, can be found in most classes that has annotation such as @RestController, @Service, @Autowired.
+
+## Concepts adapted
+1. Separating service and implementation, as seen in TransactionService and TransactionServiceImpl class.
